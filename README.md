@@ -87,13 +87,13 @@ $ helm init --service-account tiller
 
 $ helm inspect stable/jenkins > /tmp/jenkins.values
 
-**You can also modify anything else, now will we will install using out custom values file**
+**You can also modify anything else, now will we will install using our custom values file**
 
 $ helm install stable/jenkins --values /tmp/jenkins.values --name test-jenkins
 
-**Once Jenkins is pod and services are ready you will it would have created a load balancer in AWS, browse to the LB and specify port 8080. Login using the credentials you added in the values file.**
+**Once Jenkins pod and services are ready you will see load balancer in AWS would have been created, browse to the LB and specify port 8080. Login using the credentials you added in the values file.**
 
-**Update Jenkins and let configure Jenkins to create slave pods when builds are trigged**
+**Update Jenkins and lets configure Jenkins to create slave pods when builds are trigged**
 
 **Credentials --> system --> Global credentials --> Add credentials --> Kind Kubernetes**
 
