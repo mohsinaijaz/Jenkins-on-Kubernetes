@@ -35,8 +35,8 @@ $ export KOPS_STATE_STORE=s3://jenkins-k8-state-store
 
 **Options for the Kops create command**
 
---master-size=
---master-count=
+"--master-size="
+"--master-count="
 --node-size=
 --node-count=
 --cloud=
