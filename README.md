@@ -61,20 +61,48 @@ $ export KOPS_STATE_STORE=s3://jenkins-k8-state-store
 
 --dns=
 
+**We will not customize out cluster and keep it pretty basic.**
+
 $ kops create cluster --node-count=2 --node-size=t2.medium --master-size=t2.medium --zones=us-east-1a --name=${KOPS_CLUSTER_NAME}
+
+**Once the cluster is up, this will take about 15 min. Validate the cluster before setting up anything.**
+
+**Install helm on your MAC**
 
 $ brew install kubernetes-helm
 
+**Create service account for tiller on the cluster**
+
 $ kubectl create serviceaccount --namespace kube-system tiller
+
+**Create a cluster role binding for tiller service account and grant cluster admin access**
 
 $ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 
+**Initialize helm, this will create a tiller pod running in kube-system**
+
 $ helm init --service-account tiller
 
+**Now we will install Jenkins using helm chart, also I modified the values file with AdminUser and AdminPassword. Using the below command you will download the chart and can modify**
 
+$ helm inspect stable/jenkins > /tmp/jenkins.values
 
+**You can also modify anything else, now will we will install using out custom values file**
 
+$ helm install stable/jenkins --values /tmp/jenkins.values --name test-jenkins
 
+**Once Jenkins is pod and services are ready you will it would have created a load balancer in AWS, browse to the LB and specify port 8080. Login using the credentials you added in the values file.**
 
+**Update Jenkins and let configure Jenkins to create slave pods when builds are trigged**
+
+**Credentials --> system --> Global credentials --> Add credentials --> Kind Kubernetes**
+
+**Now we will grant access to Jenkins to create salve pods on our behalf**
+
+$ kubectl create clusterrolebinding permissive-binding --clusterrole=cluster-admin --user=admin --user=kubelet --group=system:serviceaccounts
+
+**Now login to jenkins, Manage Jenkins --> configure system --> Kubernetes section Add the secret file and TEST Connection**
+
+**Create a build and watch the cluster create a pod for that build, once build is complete the pod will be terminated.**
 
 $ kops delete cluster --name ${KOPS_CLUSTER_NAME} --yes
