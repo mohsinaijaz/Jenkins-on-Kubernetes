@@ -35,18 +35,30 @@ $ export KOPS_STATE_STORE=s3://jenkins-k8-state-store
 
 **Options for the Kops create command**
 
-"--master-size="
-"--master-count="
+--master-size=
+
+--master-count=
+
 --node-size=
+
 --node-count=
+
 --cloud=
+
 --zones=
+
 --cloud-labels=
+
 --bastion=
+
 --topology=
+
 --networking=
+
 --state=
+
 --dns-zone=
+
 --dns=
 
 $ kops create cluster --node-count=2 --node-size=t2.medium --master-size=t2.medium --zones=us-east-1a --name=${KOPS_CLUSTER_NAME}
