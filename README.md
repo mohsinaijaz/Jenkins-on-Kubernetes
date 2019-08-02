@@ -5,6 +5,7 @@
 Here are the steps to install Kubernetes cluster using Kops in AWS.
 
 link to kops https://github.com/kubernetes/kops
+link to Jenkins chart https://github.com/helm/charts/tree/master/stable/jenkins
 
 User who will create the cluster must have the following IAM permissions:
 1. AmazonEC2FullAccess
@@ -85,11 +86,11 @@ $ helm init --service-account tiller
 
 **Now we will install Jenkins using helm chart, also I modified the values file with AdminUser and AdminPassword. Using the below command you will download the chart and can modify**
 
-$ helm inspect stable/jenkins > /tmp/jenkins.values
+$ helm inspect stable/jenkins > /tmp/jenkins.yml
 
-**You can also modify anything else, now will we will install using our custom values file**
+**You can also modify anything else, now will we will install using our custom values file, also can specify a namespace to deploy in or if doesn't exist helm will create that namespace**
 
-$ helm install stable/jenkins --values /tmp/jenkins.values --name test-jenkins
+$ helm install stable/jenkins --values /tmp/jenkins.yml --name test-jenkins
 
 **Once Jenkins pod and services are ready you will see load balancer in AWS would have been created, browse to the LB and specify port 8080. Login using the credentials you added in the values file.**
 
